@@ -1,7 +1,6 @@
 package main
 
 import "core:math"
-import "core:c/libc"
 import "core:strings"
 import "core:sort"
 import "core:time"
@@ -116,11 +115,16 @@ draw_closest_points_text :: proc(points: ^[dynamic]Point, hoveredIndex: int) {
 RGB :: struct {
 	r, g, b: f32
 }
+
+fmod :: proc(value, modulo: f32) -> f32 {
+	return value - modulo * math.floor(value / modulo)
+}
+
 hsv_to_rgb :: proc(h, s, v: f32) -> RGB {
 	h := h
 
 	if h > 360 {
-		h = libc.fmod(h, 360)
+		h = fmod(h, 360)
 	}
 
 	hh, p, q, t, ff : f32
